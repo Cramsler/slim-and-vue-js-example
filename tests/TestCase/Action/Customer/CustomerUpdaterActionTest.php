@@ -12,7 +12,7 @@ use Selective\TestTrait\Traits\DatabaseTestTrait;
 /**
  * Test.
  *
- * @coversDefaultClass \App\Action\Customer\CustomerUpdaterAction
+ * @coversDefaultClass \App\Action\Order\OrderUpdaterAction
  */
 class CustomerUpdaterActionTest extends TestCase
 {

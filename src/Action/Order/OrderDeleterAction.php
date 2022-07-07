@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Action\Customer;
+namespace App\Action\Order;
 
-use App\Domain\Customer\Service\CustomerDeleter;
+use App\Domain\Order\Service\OrderDeleter;
 use App\Renderer\JsonRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class CustomerDeleterAction
+final class OrderDeleterAction
 {
-    private CustomerDeleter $companyDeleter;
+    private OrderDeleter $orderDeleter;
 
     private JsonRenderer $renderer;
 
-    public function __construct(CustomerDeleter $customerDeleter, JsonRenderer $renderer)
+    public function __construct(OrderDeleter $orderDeleter, JsonRenderer $renderer)
     {
-        $this->companyDeleter = $customerDeleter;
+        $this->orderDeleter = $orderDeleter;
         $this->renderer = $renderer;
     }
 
@@ -25,10 +25,10 @@ final class CustomerDeleterAction
         array $args
     ): ResponseInterface {
         // Fetch parameters from the request
-        $customerId = (int)$args['customer_id'];
+        $orderId = (int)$args['order_id'];
 
         // Invoke the domain (service class)
-        $this->companyDeleter->deleteCustomer($customerId);
+        $this->orderDeleter->deleteOrder($orderId);
 
         // Render the json response
         return $this->renderer->json($response);

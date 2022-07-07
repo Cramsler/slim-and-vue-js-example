@@ -11,7 +11,7 @@ use Selective\TestTrait\Traits\DatabaseTestTrait;
 /**
  * Test.
  *
- * @coversDefaultClass \App\Action\Customer\CustomerDeleterAction
+ * @coversDefaultClass \App\Action\Order\OrderDeleterAction
  */
 class CustomerDeleteActionTest extends TestCase
 {

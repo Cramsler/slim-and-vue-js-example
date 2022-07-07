@@ -90,7 +90,7 @@ $settings['phoenix'] = [
             'port' => 3306,
             'username' => 'root',
             'password' => 'root',
-            'db_name' => 'slim_skeleton_diff',
+            'db_name' => 'lead',
             'charset' => 'utf8',
         ],
     ],

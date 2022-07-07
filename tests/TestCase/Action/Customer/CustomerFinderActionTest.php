@@ -11,7 +11,7 @@ use Selective\TestTrait\Traits\DatabaseTestTrait;
 /**
  * Test.
  *
- * @coversDefaultClass \App\Action\Customer\CustomerFinderAction
+ * @coversDefaultClass \App\Action\Order\OrderFinderAction
  */
 class CustomerFinderActionTest extends TestCase
 {

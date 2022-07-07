@@ -17,11 +17,11 @@ return function (App $app) {
     $app->group(
         '/api',
         function (RouteCollectorProxy $app) {
-            $app->get('/customers', \App\Action\Customer\CustomerFinderAction::class);
-            $app->post('/customers', \App\Action\Customer\CustomerCreatorAction::class);
-            $app->get('/customers/{customer_id}', \App\Action\Customer\CustomerReaderAction::class);
-            $app->put('/customers/{customer_id}', \App\Action\Customer\CustomerUpdaterAction::class);
-            $app->delete('/customers/{customer_id}', \App\Action\Customer\CustomerDeleterAction::class);
+            $app->get('/orders', \App\Action\Order\OrderFinderAction::class);
+            $app->post('/orders', \App\Action\Order\OrderCreatorAction::class);
+            $app->get('/orders/{order_id}', \App\Action\Order\OrderReaderAction::class);
+            $app->put('/orders/{order_id}', \App\Action\Order\OrderUpdaterAction::class);
+            $app->delete('/orders/{order_id}', \App\Action\Order\OrderDeleterAction::class);
         }
     )->add(HttpBasicAuthentication::class);
 };
