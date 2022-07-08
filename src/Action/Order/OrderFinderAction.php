@@ -22,12 +22,8 @@ final class OrderFinderAction
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        // Optional: Pass parameters from the request to the service method
-        // ...
-
         $orders = $this->orderFinder->findOrders();
 
-        // Transform result and render to json
         return $this->renderer->json($response, $this->transform($orders));
     }
 
@@ -35,8 +31,7 @@ final class OrderFinderAction
     {
         $orders = [];
 
-        foreach ($collection->orders as $order)
-        {
+        foreach ($collection->orders as $order) {
             $orders[] = [
                 'id'    => $order->id,
                 'name'  => $order->name,

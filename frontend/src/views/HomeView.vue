@@ -2,7 +2,7 @@
     <div>
         <h3>All orders</h3>
         <div class="custom-table-container">
-            <el-table :data="sortableTableData" class="custom-table">
+            <el-table :data="sortableOrders" class="custom-table">
                 <el-table-column prop="id" label="ID" width="180" sortable/>
                 <el-table-column prop="name" label="Customer name" width="180" sortable/>
                 <el-table-column prop="phone" label="Phone number" width="180" sortable/>
@@ -12,13 +12,12 @@
                         <el-input v-model="search" size="small" placeholder="Type to search"/>
                     </template>
                     <template #default="scope">
-                        <el-button size="small">Edit</el-button>
-                        <el-button
-                            size="small"
-                            type="danger"
-                        >Delete
-                        </el-button
-                        >
+                        <el-button size="small">
+                            <router-link :to="{ name: 'edit', params: { id: scope.row.id }}">
+                                Edit
+                            </router-link>
+                        </el-button>
+                        <el-button size="small" type="danger" @click="deleteOrder(scope.row.id)">Delete</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -26,67 +25,57 @@
     </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
-import {ElTable, ElTableColumn, ElInput, ElButton} from "element-plus";
+<script>
+import {ElButton, ElInput, ElLoading, ElTable, ElTableColumn} from "element-plus";
 
-export default defineComponent({
+export default {
     name: 'HomeView',
     components: {
         ElTable,
         ElTableColumn,
         ElInput,
-        ElButton
+        ElButton,
+        ElLoading
     },
     data: () => ({
         search: '',
-        sortableTableData: [{}],
-        tableData: [
-            {
-                id: 1,
-                phone: '89829972256',
-                name: 'Петров Олег Иванович',
-                sum: '1125',
-            },
-            {
-                id: 2,
-                phone: '89048356924',
-                name: 'Измайлова Марина Александровна',
-                sum: '5030',
-            },
-            {
-                id: 3,
-                phone: '89120062811',
-                name: 'Миронов Альберт Вячеславович',
-                sum: '2249',
-            },
-            {
-                id: 4,
-                phone: '89220992809',
-                name: 'Антонова Ильмира Рашитовна',
-                sum: '7836',
-            },
-        ]
+        orders: [],
+        sortableOrders: []
     }),
-    mounted() {
-        this.sortableTableData = this.tableData;
+    async mounted() {
+        await this.fetchData();
     },
     watch: {
         search(value) {
             if(value !== '') {
-                this.sortableTableData = this.tableData.filter((data) => {
+                this.sortableOrders = this.orders.filter((data) => {
                     return data.id === Number(value) ||
-                           data.name.toLowerCase().includes(value.toLowerCase()) ||
-                           data.phone.toLowerCase().includes(value.toLowerCase()) ||
-                           data.sum.toLowerCase().includes(value.toLowerCase());
+                        data.name.toLowerCase().includes(value.toLowerCase()) ||
+                        data.phone.toLowerCase().includes(value.toLowerCase()) ||
+                        data.sum.toLowerCase().includes(value.toLowerCase());
                 });
-                console.log(this.sortableTableData)
             } else {
-                this.sortableTableData = this.tableData;
+                this.sortableOrders = this.orders;
+            }
+        }
+    },
+    methods: {
+        async fetchData() {
+            const response = await this.$axios.get('orders');
+            this.orders = response.data.orders;
+            this.sortableOrders = this.orders;
+        },
+
+        async deleteOrder(id) {
+            if(confirm(`Вы действительно хотите удалить заказ №${id} ?`)) {
+                await this.$axios.delete(`orders/${id}`);
+
+                this.orders =  this.sortableOrders.filter((order) => order.id !== id);
+                this.sortableOrders = this.orders;
             }
         }
     }
-});
+}
 </script>
 
 <style scoped>
@@ -94,7 +83,6 @@ export default defineComponent({
     padding-right: 15%;
     padding-left: 15%;
 }
-
 .custom-table {
     border-radius: 10px;
     box-shadow: 10px 10px 20px darkgray;

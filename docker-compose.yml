@@ -8,12 +8,12 @@ services:
     environment:
       - DOCKER=1
       - XDEBUG_CONFIG=remote_host=host.docker.internal
-      - MYSQL_DATABASE=test
+      - MYSQL_DATABASE=lead
       - MYSQL_USER=root
       - MYSQL_PASSWORD=root
       - MYSQL_HOST=db
     ports:
-      - "8080:80"
+      - "8000:8000"
     volumes:
       - .:/var/www/html
     depends_on:

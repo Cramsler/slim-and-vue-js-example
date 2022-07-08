@@ -1,19 +1,19 @@
 <template>
   <div>
-    <h3>Create new order</h3>
+    <h3>Update order № {{order.id}}</h3>
 
       <div class="custom-form-container">
-          <el-form class="custom-form" ref="formRef" :model="form">
+          <el-form class="custom-form" ref="formRef" :model="order">
               <el-form-item label="Name" prop="name" :rules="[{ required: true, message: 'name is required' }]">
-                  <el-input class="custom-input" v-model="form.name"  placeholder="Иванов Иван" required />
+                  <el-input class="custom-input" v-model="order.name"  placeholder="Иванов Иван" required />
               </el-form-item>
               <el-form-item label="Phone" prop="phone" :rules="[{ required: true, message: 'Phone is required' }]">
-                  <el-input class="custom-input" v-model="form.phone" placeholder="79820000000" required />
+                  <el-input class="custom-input" v-model="order.phone" placeholder="79820000000" required />
               </el-form-item>
               <el-form-item label="Sum" prop="sum" :rules="[{ required: true, message: 'Sum is required' }]">
-                  <el-input class="custom-input" v-model="form.sum"   placeholder="1000" required />
+                  <el-input class="custom-input" v-model="order.sum"   placeholder="1000" required />
               </el-form-item>
-              <el-button submit @click="createOrder">Save</el-button>
+              <el-button submit @click="updateOrder">Update</el-button>
           </el-form>
       </div>
   </div>
@@ -30,14 +30,19 @@ export default {
         ElFormItem
     },
     data: () => ({
-        form: {
-            name: '',
-            phone: '',
-            sum: ''
-        }
+        order: {}
     }),
+    async mounted() {
+        await this.fetchOrder()
+    },
     methods: {
-        async createOrder() {
+        async fetchOrder() {
+
+            const response = await this.$axios.get(`orders/${this.$route.params.id}`);
+            this.order = response.data;
+        },
+
+        async updateOrder() {
             const form = this.$refs.formRef
 
             form.validate(async (valid) => {
@@ -45,9 +50,9 @@ export default {
                     return false;
                 }
 
-                const response = await this.$axios.post('orders', this.form);
+                const response = await this.$axios.put(`orders/${this.order.id}`, this.order);
 
-                if (response.status === 201) {
+                if (response.status === 200) {
                     this.$router.push('/');
                 }
             })
