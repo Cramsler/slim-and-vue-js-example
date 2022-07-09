@@ -22,7 +22,7 @@ services:
   db:
     image: library/mysql:8.0.20
     ports:
-      - "3307:3306"
+      - "3306:3306"
     environment:
       - MYSQL_DATABASE=test
       - MYSQL_ROOT_PASSWORD=root
